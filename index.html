@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Music</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+scroll-behavior:smooth;
+}
+
+body{
+
+background:linear-gradient(-45deg,#141E30,#243B55,#4B6CB7,#182848);
+background-size:400% 400%;
+animation:bg 15s ease infinite;
+
+color:white;
+overflow-x:hidden;
+min-height:100vh;
+
+}
+
+@keyframes bg{
+
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+
+}
+
+header{
+
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+
+}
+
+h1{
+
+font-size:4rem;
+font-weight:600;
+letter-spacing:2px;
+
+}
+
+p{
+
+margin-top:15px;
+opacity:.8;
+font-size:1.1rem;
+
+}
+
+.scroll{
+
+margin-top:60px;
+font-size:40px;
+animation:bounce 2s infinite;
+
+}
+
+@keyframes bounce{
+
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(15px);}
+
+}
+
+section{
+
+padding:80px 10%;
+display:flex;
+justify-content:center;
+align-items:center;
+
+}
+
+.card{
+
+width:850px;
+background:rgba(255,255,255,.08);
+
+backdrop-filter:blur(15px);
+
+border-radius:25px;
+
+padding:40px;
+
+box-shadow:0 20px 60px rgba(0,0,0,.3);
+
+transition:.5s;
+
+}
+
+.card:hover{
+
+transform:translateY(-10px);
+
+}
+
+input[type=file]{
+
+display:none;
+
+}
+
+.upload{
+
+display:inline-block;
+
+padding:15px 35px;
+
+background:white;
+
+color:#243B55;
+
+font-weight:bold;
+
+border-radius:50px;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.upload:hover{
+
+transform:scale(1.05);
+
+background:#eeeeee;
+
+}
+
+audio{
+
+width:100%;
+
+margin-top:30px;
+
+}
+
+ul{
+
+list-style:none;
+
+margin-top:30px;
+
+}
+
+li{
+
+padding:15px;
+
+margin:10px 0;
+
+background:rgba(255,255,255,.06);
+
+border-radius:15px;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+li:hover{
+
+background:rgba(255,255,255,.15);
+
+transform:translateX(10px);
+
+}
+
+footer{
+
+text-align:center;
+
+padding:40px;
+
+opacity:.6;
+
+}
+
+.fade{
+
+opacity:0;
+transform:translateY(50px);
+transition:1s;
+
+}
+
+.fade.show{
+
+opacity:1;
+transform:translateY(0);
+
+}
+
+</style>
+
+</head>
+<body>
+
+<header>
+
+<h1>🎵 My Music</h1>
+
+<p>Your personal music space.</p>
+
+<div class="scroll">⌄</div>
+
+</header>
+
+<section>
+
+<div class="card fade">
+
+<label class="upload">
+
+Upload Music
+
+<input type="file" id="musicUpload" multiple accept="audio/*">
+
+</label>
+
+<audio id="player" controls></audio>
+
+<ul id="playlist"></ul>
+
+</div>
+
+</section>
+
+<footer>
+
+Made with ❤️
+
+</footer>
+
+<script>
+
+const upload=document.getElementById("musicUpload");
+const playlist=document.getElementById("playlist");
+const player=document.getElementById("player");
+
+upload.addEventListener("change",(e)=>{
+
+playlist.innerHTML="";
+
+const files=[...e.target.files];
+
+files.forEach(file=>{
+
+const li=document.createElement("li");
+
+li.textContent="🎵 "+file.name;
+
+const url=URL.createObjectURL(file);
+
+li.onclick=()=>{
+
+player.src=url;
+
+player.play();
+
+};
+
+playlist.appendChild(li);
+
+});
+
+});
+
+const observer=new IntersectionObserver(entries=>{
+
+entries.forEach(entry=>{
+
+if(entry.isIntersecting){
+
+entry.target.classList.add("show");
+
+}
+
+});
+
+});
+
+document.querySelectorAll(".fade").forEach(el=>observer.observe(el));
+
+</script>
+
+</body>
+</html>
